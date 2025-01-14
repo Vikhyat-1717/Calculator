@@ -1,22 +1,33 @@
-let display = document.getElementById('display');
 let currentInput = '';
+let operator = '';
+let previousInput = '';
 
-function appendNumber(num) {
-  currentInput += num.toString();
-  display.value = currentInput;
+function appendNumber(number) {
+  currentInput += number;
+  document.getElementById('display').value = currentInput;
+}
+
+function appendOperator(op) {
+  if (currentInput === '') return;
+  if (previousInput !== '') {
+    calculateResult();
+  }
+  operator = op;
+  previousInput = currentInput;
+  currentInput = '';
 }
 
 function clearDisplay() {
   currentInput = '';
-  display.value = '';
+  previousInput = '';
+  operator = '';
+  document.getElementById('display').value = '';
 }
 
 function calculateResult() {
-  try {
-    currentInput = eval(currentInput).toString();
-    display.value = currentInput;
-  } catch (e) {
-    display.value = 'Error';
-    currentInput = '';
-  }
+  if (previousInput === '' || currentInput === '') return;
+  const result = eval(previousInput + operator + currentInput);
+  document.getElementById('display').value = result;
+  previousInput = result;
+  currentInput = '';
 }
